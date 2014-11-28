@@ -428,6 +428,57 @@ function theme_linktree($force_show = false)
 
 /**
  * Show the menu up top. Something like [home] [help] [profile] [logout]...
+ * Version for Barfplaats.nl using responsive menu from 
+ * http://osvaldas.info/drop-down-navigation-responsive-and-touch-friendly
+ */
+function bp_template_menu()
+{
+	global $context;
+
+	echo '
+				<nav id="nav" role="navigation">
+				  <a href="#nav" title="Show navigation">Show navigation</a>
+    			<a href="#" title="Hide navigation">Hide navigation</a>
+					<ul>';
+
+	// Note: Menu markup has been cleaned up to remove unnecessary spans and classes.
+	foreach ($context['menu_buttons'] as $act => $button)
+	{
+		echo '
+						<li id="button_', $act, '">
+							<a', $button['active_button'] ? ' class="active"' : '', ' href="', $button['href'], '"', isset($button['target']) ? ' target="' . $button['target'] . '"' : '', '>
+								<span class="generic_icons ', $act, '" ', (!empty($button['custom']) ? ' ' . $button['custom'] : ''),'></span>', $button['title'], '
+							</a>';
+
+		if (!empty($button['sub_buttons']))
+		{
+			echo '
+							<ul>';
+
+			foreach ($button['sub_buttons'] as $childbutton)
+			{
+				echo '
+								<li', !empty($childbutton['sub_buttons']) ? ' class="subsections"' :'', '>
+									<a href="', $childbutton['href'], '"' , isset($childbutton['target']) ? ' target="' . $childbutton['target'] . '"' : '', '>
+										', $childbutton['title'], '
+									</a>';
+				echo '
+								</li>';
+			}
+				echo '
+							</ul>';
+		}
+		echo '
+						</li>';
+	}
+
+	echo '
+					</ul>
+				</nav>';
+}
+
+/**
+ * Show the menu up top. Something like [home] [help] [profile] [logout]...
  */
 function template_menu()
 {
